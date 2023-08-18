@@ -2,6 +2,8 @@ package tech.suji.movieflix.controller;
 
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import jakarta.validation.Valid;
+
+import java.time.LocalDate;
 import java.util.List;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -14,6 +16,8 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import tech.suji.movieflix.domain.MovieSearchDTO;
 import tech.suji.movieflix.model.MovieDTO;
 import tech.suji.movieflix.service.MovieService;
 
@@ -25,6 +29,12 @@ public class MovieController {
 
 	public MovieController(final MovieService movieService) {
 		this.movieService = movieService;
+	}
+
+	@GetMapping
+	public ResponseEntity<List<MovieDTO>> searchMovies(MovieSearchDTO searchDTO) {
+		//return ResponseEntity.ok(movieService.searchMovies(searchDTO));
+		return null;
 	}
 
 	@GetMapping
