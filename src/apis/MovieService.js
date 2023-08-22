@@ -13,5 +13,9 @@ export const updateMovieById = (movieId, movie) => apiService.put(`/movies/${mov
 export const deleteMovieById = (movieId) => apiService.delete(`/movies/${movieId}`);
 export const saveMovie = (movie) => apiService.post(`/movies`, movie);
 export const getAllMovies = () => apiService.get('/movies');
+export const existsByTitle = (title) => apiService.get(`/movies/exists/${title}`);
+export const uniqueGenre= () => apiService.get(`/movies/genre`);
+export const callLateApi= () => apiService.get(`/movies/late`);
+
 // Add more API functions here
 

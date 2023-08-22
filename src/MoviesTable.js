@@ -7,17 +7,23 @@ const MoviesTable = () => {
     const [movies, setMovies] = useState([]);
     useEffect(
         () => {
+            getAllMovies()
+                .then(
+                    results => {
+                        console.info(results.data);
+                        setMovies(results.data);
+                    }
+                ).catch(error => {
+                    console.info('Error: ', error);
+                })
+
             return () => {
 
             }
         }, []
     );
 
-    getAllMovies().then(
-        results => {
-            console.info(results);
-        }
-    ).catch()
+
 
 
 
@@ -34,7 +40,21 @@ const MoviesTable = () => {
             </tr>
         </thead>
         <tbody>
-
+            {
+                movies.map(
+                    (e, i) => (
+                        <tr key={i}>
+                            <td>{e.title}</td>
+                            <td>{e.genre}</td>
+                            <td>{e.director}</td>
+                            <td>{e.duration}</td>
+                            <td>{e.rating}</td>
+                            <td>{e.releaseDate}</td>
+                            <td>{e.collection}</td>
+                        </tr>
+                    )
+                )
+            }
 
         </tbody>
     </table>);
