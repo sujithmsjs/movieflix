@@ -3,6 +3,7 @@ package tech.suji.movieflix.service;
 import java.util.List;
 
 import tech.suji.movieflix.domain.MovieSearchDTO;
+import tech.suji.movieflix.model.Genre;
 import tech.suji.movieflix.model.MovieDTO;
 
 public interface MovieService {
@@ -20,5 +21,10 @@ public interface MovieService {
 	MovieDTO get(Long id);
 
 	List<MovieDTO> findAll();
+
+	boolean existsByMovieName(String movieName);
+
+	List<Genre> getUniqueGenres();
+
 
 }

@@ -1,13 +1,14 @@
 package tech.suji.movieflix.controller;
 
-import io.swagger.v3.oas.annotations.responses.ApiResponse;
-import jakarta.validation.Valid;
-
-import java.time.LocalDate;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Random;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -17,10 +18,13 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import tech.suji.movieflix.domain.MovieSearchDTO;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import jakarta.validation.Valid;
+import tech.suji.movieflix.model.Genre;
 import tech.suji.movieflix.model.MovieDTO;
 import tech.suji.movieflix.service.MovieService;
 
+@CrossOrigin("*")
 @RestController
 @RequestMapping(value = "/api/movies", produces = MediaType.APPLICATION_JSON_VALUE)
 public class MovieController {
@@ -34,6 +38,34 @@ public class MovieController {
 	@GetMapping
 	public ResponseEntity<List<MovieDTO>> getAllMovies() {
 		return ResponseEntity.ok(movieService.findAll());
+	}
+
+	@GetMapping("/exists/{movieName}")
+	public boolean existsByMovie(@PathVariable String movieName) {
+		return movieService.existsByMovieName(movieName);
+	}
+
+	@GetMapping("/genre")
+	public List<Genre> getUniqueGenres() {
+		return movieService.getUniqueGenres();
+	}
+
+	@GetMapping("/late")
+	public ResponseEntity<Map<String, String>> getLateReply() throws InterruptedException {
+		Thread.sleep(3_000);
+		Map<String, String> map = new HashMap<>();
+		;
+
+		Random r = new Random();
+		if(r.nextBoolean()) {
+			map.put("result", "Success");
+			return ResponseEntity.ok(map);
+		}else {
+			map.put("result", "Failed");
+			return new ResponseEntity<Map<String, String>>(map, HttpStatus.BAD_REQUEST);
+		}
+
+
 	}
 
 	@GetMapping("/{id}")

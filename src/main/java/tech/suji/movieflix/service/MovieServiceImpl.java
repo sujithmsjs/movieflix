@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import tech.suji.movieflix.domain.Movie;
 import tech.suji.movieflix.domain.MovieSearchDTO;
+import tech.suji.movieflix.model.Genre;
 import tech.suji.movieflix.model.MovieDTO;
 import tech.suji.movieflix.repos.MovieRepository;
 import tech.suji.movieflix.util.NotFoundException;
@@ -129,6 +130,16 @@ public class MovieServiceImpl implements MovieService {
 		Specification<Movie> specifications = specs.stream().reduce(Specification.where(null), Specification::and);
 
 		return null;
+	}
+
+	@Override
+	public boolean existsByMovieName(String movieName) {
+		return movieRepository.existsByTitleIgnoreCase(movieName);
+	}
+
+	@Override
+	public List<Genre> getUniqueGenres() {
+		return movieRepository.findDistinctGenres();
 	}
 
 }
