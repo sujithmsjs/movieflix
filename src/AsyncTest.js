@@ -1,12 +1,40 @@
 import { useState } from 'react';
 import { callLateApi } from './apis/MovieService'
 
+const getApiResult = async (event) => {
+    console.info('Before API call');
+    try {
+        console.info('Before AWAIT');
+        const result = await callLateApi();
+        console.info('After AWAIT');
+        console.info('Result', JSON.stringify(result.data, null, 5));
+        return result.data;
+    } catch (error) {
+        const { code, message, response: { data, status, statusText }, request: { responseURL } } = error;
+        const err = {
+            code, message, data, status, statusText, responseURL
+        }
+        console.info('Error', err);
+    }
+    console.info('After API call');
+}
+
 const AsyncTest = () => {
 
-    const [value, setValue] = useState({ result: 'Pending...', status: 'COMPLETE' })
+    const callAPI = async () => {
+        console.info('Button clicked: ');
+        const result = await getApiResult();
+        console.info('Result: ', result);
+    }
+    
 
-    const callAPI = (event) => {
-        setValue((prevState) => ({ result : '', status: 'WAIT' }));
+    const [value, setValue] = useState({ result: 'Pending...', status: 'COMPLETE' })
+    console.log('');
+
+    
+
+    const callAPI_v1 = (event) => {
+        setValue((prevState) => ({ result: '', status: 'WAIT' }));
         callLateApi()
             .then(result => {
                 console.info('Inside then');
@@ -25,11 +53,11 @@ const AsyncTest = () => {
         console.info('After Finally');
     }
 
-   
+
 
     return <div>
         <h3>Async Test</h3>
-        <div className={`alert ${value.result === 'Success' ? 'alert-primary' :  'alert-danger'}`} role="alert">
+        <div className={`alert ${value.result === 'Success' ? 'alert-primary' : 'alert-danger'}`} role="alert">
             {value.result}
 
             {

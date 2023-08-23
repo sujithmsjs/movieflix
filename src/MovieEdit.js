@@ -1,15 +1,32 @@
 import { useForm } from "react-hook-form";
 import DropdwonBox from "./ui/DropdownBox";
 import Input from "./ui/Input";
-import { existsByTitle, saveMovie } from "./apis/MovieService"
+import { existsByTitle, getMovieById } from "./apis/MovieService"
+import { useEffect } from "react";
+
+const getMovie = async (id) => {
+    const result = await getMovieById(id);
+    console.info(result)
+    return result;
+}
 
 
-
-const MovieForm = ({ onSubmitMovie, initMovie }) => {
+const MovieEdit = ({ onSubmitMovie, initMovieId, onCancel }) => {
 
     const { register, control, form, handleSubmit, formState, watch } = useForm({
-        defaultValues: initMovie
+        defaultValues: {}
     })
+
+    useEffect(
+        () => {
+            const result = getMovie(initMovieId).then(results => result.data)
+
+            console.info('Result inside useEffect ', result);
+        }, []
+    )
+
+
+
     const title = watch('title');
 
     const { errors, isDirty, isValid } = formState;
@@ -17,6 +34,13 @@ const MovieForm = ({ onSubmitMovie, initMovie }) => {
     const onSubmit = (data) => {
         onSubmitMovie(data);
     }
+
+    const handleCancle = () => {
+        onCancel();
+    }
+
+
+
 
     return (<form onSubmit={handleSubmit(onSubmit)} noValidate>
 
@@ -51,12 +75,15 @@ const MovieForm = ({ onSubmitMovie, initMovie }) => {
 
         <Input type="date" label="ReleaseDate" register={register('releaseDate')} errors={errors} />
         <Input type="number" label="Collection" register={register('collection')} errors={errors} />
+
         <Input type="number" label="Rating" register={register('rating')} errors={errors} />
         <div className="my-3">
             <button type="submit" class="btn btn-primary">Submit</button>
+            <button type="button" class="btn btn-danger mx-4" onClick={handleCancle}>Cancel</button>
         </div>
+
 
     </form>);
 }
 
-export default MovieForm;
+export default MovieEdit;
