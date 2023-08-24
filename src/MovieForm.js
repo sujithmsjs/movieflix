@@ -7,9 +7,10 @@ import { existsByTitle, saveMovie } from "./apis/MovieService"
 
 const MovieForm = ({ onSubmitMovie, initMovie }) => {
 
-    const { register, control, form, handleSubmit, formState, watch } = useForm({
+    const { register, control, form, handleSubmit, formState, watch, reset } = useForm({
         defaultValues: initMovie
     })
+
     const title = watch('title');
 
     const { errors, isDirty, isValid } = formState;
@@ -42,18 +43,13 @@ const MovieForm = ({ onSubmitMovie, initMovie }) => {
 
         <Input label="Director" register={register('director', { required: "Director is required" })} errors={errors} />
         <Input type="number" label="Duration" register={register('duration')} errors={errors} />
-
-
         <DropdwonBox name='genre' register={register} options={['ANIMATION', 'FANTASY', 'DRAMA', 'WAR', 'SCI_FI', 'HISTORICAL', 'DOCUMENTARY', 'ADVENTURE', 'CRIME', 'SUPERHERO', 'ACTION', 'THRILLER', 'COMEDY', 'SPY', 'MYSTERY', 'FAMILY', 'HORROR', 'MUSICAL', 'WESTERN', 'ROMANCE']} />
-
-
-
-
         <Input type="date" label="ReleaseDate" register={register('releaseDate')} errors={errors} />
         <Input type="number" label="Collection" register={register('collection')} errors={errors} />
         <Input type="number" label="Rating" register={register('rating')} errors={errors} />
-        <div className="my-3">
+        <div className="my-3 g-3">
             <button type="submit" class="btn btn-primary">Submit</button>
+            <button type="button" onClick={() => reset()} class="btn btn-success mx-4">Reset</button>
         </div>
 
     </form>);

@@ -14,18 +14,12 @@ const getMovie = async (id) => {
 const MovieEdit = ({ onSubmitMovie, initMovieId, onCancel }) => {
 
     const { register, control, form, handleSubmit, formState, watch } = useForm({
-        defaultValues: {}
+        defaultValues: async () => {
+            const result =  await getMovie(initMovieId);
+            console.info('DefaultValues: ', result.data);
+            return result.data;
+        }
     })
-
-    useEffect(
-        () => {
-            const result = getMovie(initMovieId).then(results => result.data)
-
-            console.info('Result inside useEffect ', result);
-        }, []
-    )
-
-
 
     const title = watch('title');
 
